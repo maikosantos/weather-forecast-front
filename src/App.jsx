@@ -3,10 +3,12 @@ import { useForm } from "react-hook-form";
 import "./App.css";
 
 import { MagnifyingGlass } from "phosphor-react";
-import Spinner from "./components/Spinner";
+import toast, { Toaster } from "react-hot-toast";
+import { getWeatherForecast } from "./services/weatherForecastService";
 
 function App() {
   const [inProgress, setInProgress] = useState(false);
+  const [forecast, setForecast] = useState([]);
 
   const {
     register,
@@ -14,7 +16,34 @@ function App() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+
+    //"Street": "1600 Pennsylvania Ave NW",
+    //"City": "Washington",
+    //"StateAbbreviation": "DC",
+    //"ZipCode": "20500"
+
+    setInProgress(true);
+    setForecast([]);
+
+    getWeatherForecast("1600 Pennsylvania Ave NW", "Washington", "DC", "20500")
+      .then((response) => {
+        console.log("response: ", response.periods);
+
+        setForecast(response.periods);
+
+        setInProgress(false);
+      })
+      .catch((err) => {
+        setInProgress(false);
+        console.error(err);
+        toast.error(err.message, {
+          duration: 5000,
+          position: "top-right",
+        });
+      });
+  };
 
   return (
     <div className="wrapper">
@@ -76,27 +105,32 @@ function App() {
               disabled={inProgress ? true : false}
             >
               <MagnifyingGlass size={30} weight="regular" />
-              {inProgress ? "Searching..." : "Search Weather Forecast"}
+              {inProgress ? "Searching forecast..." : "Search Weather Forecast"}
             </button>
-            {/* <Spinner /> */}
           </section>
         </form>
-        <div className="contentWhaterForecast">
-          <div className="cardForecast">
-            Mostly Cloudy then Light Rain Likely
+
+        {forecast.length === 0 ? (
+          <div className="contentWhaterForecast"></div>
+        ) : (
+          <div className="contentWhaterForecast">
+            <div className="cardForecast">
+              Mostly Cloudy then Light Rain Likely
+            </div>
+            <div className="cardForecast">
+              <strong>Thursday</strong>
+              <span>Icon</span>
+              <span>Sunny</span>
+            </div>
+            <div className="cardForecast">Day 3</div>
+            <div className="cardForecast">Day 4</div>
+            <div className="cardForecast">Day 5</div>
+            <div className="cardForecast">Day 6</div>
+            <div className="cardForecast">Day 7</div>
           </div>
-          <div className="cardForecast">
-            <strong>Thursday</strong>
-            <span>Icon</span>
-            <span>Sunny</span>
-          </div>
-          <div className="cardForecast">Day 3</div>
-          <div className="cardForecast">Day 4</div>
-          <div className="cardForecast">Day 5</div>
-          <div className="cardForecast">Day 6</div>
-          <div className="cardForecast">Day 7</div>
-        </div>
+        )}
       </div>
+      <Toaster />
     </div>
   );
 }

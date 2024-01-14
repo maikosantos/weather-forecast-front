@@ -1,0 +1,43 @@
+.cardForecast{
+  border: 2px solid var(--blue);
+  background-color: var(--white);
+  border-radius: 1rem;
+  display: flex;
+  width: 18rem;
+  height: 16rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 0.1rem 0.3rem;
+  padding: 0.5rem 0.5rem 0.5rem ;
+}
+
+.cardForecast strong{
+  font-size: 15px;
+  padding-bottom: 0.6rem;
+}
+
+.cardForecast a{
+  padding: 8px;
+  border-radius: 5rem;
+}
+
+.cardForecast img{
+  border-radius: 5px;
+}
+
+.date{
+  font-size: 15px;
+}
+
+.shortForecast{
+  font-size: 15px;
+}
+
+
+.temperature{
+  font-size: 35px;
+  padding-bottom: 2px;
+
+}

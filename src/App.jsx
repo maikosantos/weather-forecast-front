@@ -5,6 +5,7 @@ import "./App.css";
 import { MagnifyingGlass } from "phosphor-react";
 import toast, { Toaster } from "react-hot-toast";
 import { getWeatherForecast } from "./services/weatherForecastService";
+import { CardForecast } from "./components/CardForecast";
 
 function App() {
   const [inProgress, setInProgress] = useState(false);
@@ -27,7 +28,10 @@ function App() {
     setInProgress(true);
     setForecast([]);
 
-    getWeatherForecast("1600 Pennsylvania Ave NW", "Washington", "DC", "20500")
+    //206-200 San Pedro St, Los Angeles, CA 90012
+    //1600 Pennsylvania Ave NW, Washington, DC, 20500
+
+    getWeatherForecast(data)
       .then((response) => {
         console.log("response: ", response.periods);
 
@@ -110,24 +114,14 @@ function App() {
           </section>
         </form>
 
-        {forecast.length === 0 ? (
-          <div className="contentWhaterForecast"></div>
-        ) : (
+        {forecast && forecast.length > 0 ? (
           <div className="contentWhaterForecast">
-            <div className="cardForecast">
-              Mostly Cloudy then Light Rain Likely
-            </div>
-            <div className="cardForecast">
-              <strong>Thursday</strong>
-              <span>Icon</span>
-              <span>Sunny</span>
-            </div>
-            <div className="cardForecast">Day 3</div>
-            <div className="cardForecast">Day 4</div>
-            <div className="cardForecast">Day 5</div>
-            <div className="cardForecast">Day 6</div>
-            <div className="cardForecast">Day 7</div>
+            {forecast.map((data) => (
+              <CardForecast key={forecast.number} forecast={data} />
+            ))}
           </div>
+        ) : (
+          <></>
         )}
       </div>
       <Toaster />
